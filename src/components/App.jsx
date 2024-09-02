@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
+import { setFilter } from '../redux/filterSlice';
+import { getContacts, getFilter } from '../redux/selector';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, deleteContact } from '../redux/contactsSlice';
 
 const initialContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -11,43 +15,54 @@ const initialContacts = [
 ];
 
 export const App = () => {
-  const savedContacts = localStorage.getItem('contacts');
+  /*   const savedContacts = localStorage.getItem('contacts');
   const [contacts, setContacts] = useState(
     savedContacts !== null ? JSON.parse(savedContacts) : initialContacts
   );
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState(''); */
 
-  useEffect(() => {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+
+  /*   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  }, [contacts]); */
 
-  const addContact = newContact => {
-    setContacts(prevContacts => [...prevContacts, newContact]);
+  const handleAddContact = newContact => {
+    // setContacts(prevContacts => [...prevContacts, newContact]);
+    dispatch(addContact(newContact));
   };
 
-  const deleteContact = id => {
-    setContacts(prevContacts =>
+  const handleDeleteContact = id => {
+    /*   setContacts(prevContacts =>
       prevContacts.filter(contact => contact.id !== id)
-    ); //filter() method creates a new array with all elements that pass the test implemented by a provided function
+    ); */ //filter() method creates a new array with all elements that pass the test implemented by a provided function
+    dispatch(deleteContact(id));
   };
 
-  const filterContact = () => {
-    const filterLowerCase = filter.toLowerCase();
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filterLowerCase)
-    );
+  const handleSetFilter = newFilter => {
+    dispatch(setFilter(newFilter));
   };
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+  /* 
+  const filterLowerCase = filter.toLowerCase();
+  return contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filterLowerCase)
+  ); */
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <ContactForm addContact={addContact} contacts={contacts} />
+      <ContactForm addContact={handleAddContact} contacts={contacts} />
 
       <h2>Contacts</h2>
-      <Filter filter={filter} setFilter={setFilter} />
+      <Filter filter={filteredContacts} setFilter={handleSetFilter} />
       <ContactList
-        filterContact={filterContact}
-        deleteContact={deleteContact}
+        filterContact={handleSetFilter}
+        deleteContact={handleDeleteContact}
         contacts={contacts}
       />
     </div>
