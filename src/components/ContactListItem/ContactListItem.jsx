@@ -5,7 +5,7 @@ export const ContactListItem = ({ filteredContact, deleteContact }) => {
   const handleDelete = () => {
     deleteContact(filteredContact.id);
     Notify.success(`${filteredContact.name} was deleted`, {
-      position: 'center-top',
+      position: 'right-top',
     });
   };
 
