@@ -44,9 +44,7 @@ export const App = () => {
   const handleFilterContact = newFilter => {
     dispatch(setFilter(newFilter));
   };
-  const filteredContact = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+
   const filterContact = () => {
     const filterLowerCase = filter.toLowerCase();
     return contacts.filter(contact =>
