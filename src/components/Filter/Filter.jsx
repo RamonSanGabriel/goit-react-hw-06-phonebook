@@ -1,8 +1,15 @@
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilter } from '../../redux/selector';
+import { setFilter } from '../../redux/filterSlice';
 
-export const Filter = ({ filter, setFilter }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(getFilter);
+  // const { filter } = useSelector((state) => state.filter);
+
   const handleFilterChange = e => {
-    setFilter(e.target.value);
+    // setFilter(e.target.value);
+    dispatch(setFilter(e.target.value));
   };
 
   return (
@@ -17,8 +24,4 @@ export const Filter = ({ filter, setFilter }) => {
       />
     </div>
   );
-};
-Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
-  setFilter: PropTypes.func.isRequired,
 };
