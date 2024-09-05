@@ -10,7 +10,7 @@ const filterSlice = createSlice({
       reducer(state, action) {
         state.filterValue = action.payload;
       },
-      prepare: filterValue => {
+      prepare(filterValue) {
         return { payload: filterValue };
       },
     },
